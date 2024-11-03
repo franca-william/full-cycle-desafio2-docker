@@ -1,0 +1,40 @@
+services:
+
+  app:
+    build:
+      context: ../desafio2
+    container_name: app
+    networks:
+      - nodenet
+    volumes:
+      - ../desafio2:/usr/src/app
+    tty: true
+    ports:
+      - "8080:8080"
+    
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - nodenet  
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - nodenet
+    depends_on:
+      - app
+networks:
+  nodenet:
+    driver: bridge
