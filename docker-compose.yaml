@@ -2,12 +2,12 @@ services:
 
   app:
     build:
-      context: ../desafio2
+      context: ./
     container_name: app
     networks:
       - nodenet
     volumes:
-      - ../desafio2:/usr/src/app
+      - ./:/usr/src/app
     tty: true
     ports:
       - "8080:8080"
