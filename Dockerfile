@@ -9,11 +9,10 @@ RUN npm cache clean --force
 RUN npm install
 
 COPY ./ ./
+COPY init.sql /docker-entrypoint-initdb.d/init.sql
+RUN chmod a+r /docker-entrypoint-initdb.d/*
 
 RUN npm run build
 
 EXPOSE 8080
-
 CMD ["npm", "start"]
-
-#docker run -d -p 8080:8080 --name node-hello node-hello
